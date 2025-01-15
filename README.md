@@ -10,3 +10,9 @@ The requirements will be as follows:
 6. Postman to test API endpoints
 7. Security with Jwt
 8. Correct logging of actions in the system
+
+So far, there are endpoints for login, registration, listing, updating and deleting users, the latter two being restricted only to admin roles.
+
+Admin    
+UserName: admin  
+Password: Admin@123  
