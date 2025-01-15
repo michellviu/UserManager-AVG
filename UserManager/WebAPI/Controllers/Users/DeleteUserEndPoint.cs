@@ -1,6 +1,7 @@
 ﻿using Core.DomainService.Interfaces.Repository;
 using Core.DomainService.Interfaces.Services;
 using Core.DomainService.Interfaces.UnitWork;
+using Microsoft.AspNetCore.Authorization;
 
 namespace WebAPI.Controllers.Users
 {
@@ -15,8 +16,8 @@ namespace WebAPI.Controllers.Users
         public override void Configure()
         {
             Delete("/api/users/{id}");
-           // AllowAnonymous();
-           
+            Roles("Admin");
+
         }
 
         public override async Task HandleAsync(CancellationToken ct)

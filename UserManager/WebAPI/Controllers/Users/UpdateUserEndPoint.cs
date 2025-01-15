@@ -21,8 +21,8 @@ namespace WebAPI.Controllers.Users
         public override void Configure()
         {
             Put("/api/users/{id}");
-           // AllowAnonymous();
             Validator<UserDtoValidator>();
+            Roles("Admin");
         }
 
         public override async Task HandleAsync(UserDto newuser,CancellationToken ct)
