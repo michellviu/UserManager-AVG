@@ -23,7 +23,7 @@ namespace Infrastructure.AppService.Services
             this.configuration = configuration;
             this.userManager = userManager;
         }
-        public async Task<string> GenerateJwtToken(User user)
+        public async Task<string> GenerateJwtTokenAsync(User user)
         {
             var userRoles = await userManager.GetRolesAsync(user);
             var claims = new List<Claim>

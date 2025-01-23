@@ -9,6 +9,6 @@ namespace Core.DomainService.Interfaces.Services
 {
     public interface ITokenGenerator
     {
-        Task<string> GenerateJwtToken(User user);
+        Task<string> GenerateJwtTokenAsync(User user);
     }
 }

@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Core.DomainService.Interfaces.UnitWork
+namespace Core.DomainService.Interfaces.Seeders
 {
-    public interface IUnitWork : IDisposable
+    public interface ISeedData
     {
-        Task SaveAsync();
+        Task SeedDataAsync();
     }
 }

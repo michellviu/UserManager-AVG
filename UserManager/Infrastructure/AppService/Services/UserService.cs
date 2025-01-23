@@ -20,13 +20,13 @@ namespace Infrastructure.AppService.Services
         public async Task AddAsync(User entity)
         {
            await unitWork.UserRepository.AddAsync(entity);
-           await unitWork.Save();
+           await unitWork.SaveAsync();
         }
 
         public async Task DeleteAsync(int id)
         {
             await unitWork.UserRepository.DeleteAsync(id);
-            await unitWork.Save();
+            await unitWork.SaveAsync();
         }
 
         public async Task<List<User>> GetAllAsync()
@@ -50,8 +50,8 @@ namespace Infrastructure.AppService.Services
             entityToUpdate.Email = entity.Email;
             entityToUpdate.UserName = entity.UserName;
 
-            await unitWork.UserRepository.UpdateAsync(entityToUpdate);
-            await unitWork.Save();
+            unitWork.UserRepository.Update(entityToUpdate);
+            await unitWork.SaveAsync();
         }
     }
 }

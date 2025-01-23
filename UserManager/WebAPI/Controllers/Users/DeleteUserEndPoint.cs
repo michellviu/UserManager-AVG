@@ -16,7 +16,7 @@ namespace WebAPI.Controllers.Users
         public override void Configure()
         {
             Delete("/api/users/{id}");
-            Roles("Admin");
+            Roles("ADMIN");
 
         }
 

@@ -11,7 +11,7 @@ namespace Core.DomainService.Interfaces.Repository
         Task<T> GetByIdAsync(int id);
         Task<List<T>> GetAllAsync();
         Task AddAsync(T entity);
-        Task UpdateAsync(T entityToUpdate);
+        void Update(T entityToUpdate);
         Task DeleteAsync(int id);
     }
 }
