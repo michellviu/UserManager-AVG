@@ -22,7 +22,7 @@ namespace WebAPI.Controllers.Users
         {
             Put("/api/users/{id}");
             Validator<UserDtoValidator>();
-            Roles("Admin");
+            Roles("ADMIN");
         }
 
         public override async Task HandleAsync(UserDto newuser,CancellationToken ct)

@@ -14,12 +14,12 @@ namespace Infrastructure.Infrastructure.Persistence.Validator
         public UserDtoValidator()
         {
             RuleFor(x => x.UserName)
-                .NotEmpty().WithMessage("El nombre de usuario es obligatorio.")
-                .Length(3, 50).WithMessage("El nombre de usuario debe tener entre 3 y 50 caracteres.");
+                .NotEmpty().WithMessage("Username is required.")
+                .Length(3, 50).WithMessage("The username must be between 3 and 50 characters long.");
 
             RuleFor(x => x.EmailAddress)
-                .NotEmpty().WithMessage("El correo electrónico es obligatorio.")
-                .EmailAddress().WithMessage("El correo electrónico no es válido.");
+                .NotEmpty().WithMessage("Email is required.")
+                .EmailAddress().WithMessage("Email is invalid.");
              
         }
     }

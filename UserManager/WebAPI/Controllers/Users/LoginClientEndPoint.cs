@@ -38,7 +38,7 @@ namespace WebAPI.Controllers.Users
 
             var user = await userManager.FindByNameAsync(r.username);
             var Id = user.Id;
-            var jwtToken = await tokenGenerator.GenerateJwtToken(user);
+            var jwtToken = await tokenGenerator.GenerateJwtTokenAsync(user);
 
             var responselogin = new ResponseLogin { username = r.username, token = jwtToken.ToString() };
             await SendAsync(responselogin);

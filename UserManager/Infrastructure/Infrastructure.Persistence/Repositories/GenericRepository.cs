@@ -41,7 +41,7 @@ namespace Infrastructure.Infrastructure.Persistence.Repositories
             _context.Set<T>().Remove(entity);
         }
 
-        public async Task UpdateAsync(T entityToUpdate)
+        public void Update(T entityToUpdate)
         {
             _context.Set<T>().Update(entityToUpdate);
         }

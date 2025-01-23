@@ -13,16 +13,16 @@ namespace Infrastructure.Infrastructure.Persistence.Validator
         public RequestUserRegisterValidator()
         {
             RuleFor(x => x.username)
-                .NotEmpty().WithMessage("El nombre de usuario es obligatorio.")
-                .Length(3, 50).WithMessage("El nombre de usuario debe tener entre 3 y 50 caracteres.");
+                .NotEmpty().WithMessage("Username is required.")
+                .Length(3, 50).WithMessage("The username must be between 3 and 50 characters long.");
 
             RuleFor(x => x.password)
-                .NotEmpty().WithMessage("La contraseña es obligatoria.")
-                .MinimumLength(6).WithMessage("La contraseña debe tener al menos 6 caracteres.");
+                .NotEmpty().WithMessage("The password is required.")
+                .MinimumLength(6).WithMessage("The password must be at least 6 characters long.");
 
             RuleFor(x => x.email)
-                .NotEmpty().WithMessage("El correo electrónico es obligatorio.")
-                .EmailAddress().WithMessage("El correo electrónico no es válido.");
+                .NotEmpty().WithMessage("Email is required.")
+                .EmailAddress().WithMessage("Email is invalid.");
         }
     }
 }
