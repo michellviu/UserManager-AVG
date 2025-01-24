@@ -5,14 +5,16 @@ using Infrastructure.Infrastructure.Persistence.Validator;
 using FluentValidation.Results;
 using Core.Domain.Entities;
 using Microsoft.AspNetCore.Identity;
+using WebAPI.Handlers.Users;
+using Core.Exceptions;
 
-namespace WebAPI.Controllers.Users
+namespace WebAPI.EndPoints.Users
 {
-    public class UpdateUserEndPoint : Endpoint<UserDto>
+    public class UserUpdateEndPoint : Endpoint<UserDto>
     {
         private readonly IUserService userService;
         private readonly UserManager<User> userManager;
-        public UpdateUserEndPoint(IUserService userService,UserManager<User> userManager)
+        public UserUpdateEndPoint(IUserService userService,UserManager<User> userManager)
         {
             this.userService = userService;
             this.userManager = userManager;
@@ -28,32 +30,23 @@ namespace WebAPI.Controllers.Users
         public override async Task HandleAsync(UserDto newuser,CancellationToken ct)
         {
             var userId = Route<int>("id");
-
-
-            var user = await userService.GetByIdAsync(userId);
-            if (user == null)
+            var userupdateHandler = new UserUpdateHandler(userService, userManager);
+            try
+            {
+                await userupdateHandler.HandleAsync(newuser, userId);
+                await SendOkAsync(ct);
+            }
+            catch(EntityNotFoundException)
             {
                 await SendNotFoundAsync(ct);
                 return;
-            }
-          
-            var usermapper = new UserMapper(userService);
-            var user1 = await usermapper.MapToEntity(newuser);
-
-            user1.UserName = newuser.UserName;
-            user1.Email = newuser.EmailAddress;
-
-            var result = await userManager.UpdateAsync(user);
-            if (!result.Succeeded)
+            }catch (Exception ex)
             {
-                foreach (var error in result.Errors)
-                {
-                    AddError(error.Description);
-                }
+                AddError(ex.Message);
                 ThrowIfAnyErrors();
                 return;
             }
-            await SendOkAsync(ct);
+
         }
     }
 }
