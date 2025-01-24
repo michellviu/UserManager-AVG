@@ -3,16 +3,18 @@ using Core.Domain.Models;
 using Core.DomainService.Interfaces.Services;
 using Duende.IdentityServer.Models;
 using Microsoft.AspNetCore.Identity;
+using Core.Exceptions;
+using WebAPI.Handlers.Users;
 
-namespace WebAPI.Controllers.Users
+namespace WebAPI.EndPoints.Users
 {
-    public class LoginClientEndPoint : Endpoint<RequestUserLogin>
+    public class UserLoginEndPoint : Endpoint<RequestUserLogin>
     {
 
         private readonly UserManager<User> userManager;
         private readonly SignInManager<User> signInManager;
         private readonly ITokenGenerator tokenGenerator;
-        public LoginClientEndPoint(UserManager<User> userManager, SignInManager<User> signInManager, ITokenGenerator tokenGenerator)
+        public UserLoginEndPoint(UserManager<User> userManager, SignInManager<User> signInManager, ITokenGenerator tokenGenerator)
         {
             this.userManager = userManager;
             this.signInManager = signInManager;
@@ -26,23 +28,19 @@ namespace WebAPI.Controllers.Users
 
         public override async Task HandleAsync(RequestUserLogin r, CancellationToken c)
         {
+            var userloginHandler = new UserLoginHandler(userManager, signInManager, tokenGenerator);
 
-            var result = await signInManager.PasswordSignInAsync(r.username, r.password, false, false);
-
-            if (!result.Succeeded)
+            try
             {
-                AddError("Sorry! Username or Password is wrong.");
+                await SendAsync(await userloginHandler.HandleAsync(r));
+            }
+            catch (InvalidCredentialsException e)
+            {
+                AddError(e.Message);
                 ThrowIfAnyErrors();
                 return;
             }
-
-            var user = await userManager.FindByNameAsync(r.username);
-            var Id = user.Id;
-            var jwtToken = await tokenGenerator.GenerateJwtTokenAsync(user);
-
-            var responselogin = new ResponseLogin { username = r.username, token = jwtToken.ToString() };
-            await SendAsync(responselogin);
-
+           
         }
     }
 }

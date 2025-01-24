@@ -25,7 +25,7 @@ namespace Infrastructure.Mappers
         [MapProperty(nameof(User.Email), nameof(UserDto.EmailAddress))]
         public partial UserDto MapToDto(User userEntity);
 
-        public async Task<User> MapToEntity(UserDto userDto)
+        public async Task<User> MapToEntityAsync(UserDto userDto)
         {
             var user = await _userService.GetByIdAsync(userDto.Id);
             if (user == null)

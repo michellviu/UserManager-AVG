@@ -2,8 +2,9 @@
 using Core.DomainService.Interfaces.Services;
 using Infrastructure.Mappers;
 using Microsoft.AspNetCore.Authorization;
+using WebAPI.Handlers.Users;
 
-namespace WebAPI.Controllers.Users
+namespace WebAPI.EndPoints.Users
 {
     public class UsersEndPoint : EndpointWithoutRequest<List<UserDto>>
     {
@@ -14,19 +15,14 @@ namespace WebAPI.Controllers.Users
         }
         public override void Configure()
         {
+            
             Get("api/users");
       
         }
         public override async Task HandleAsync(CancellationToken ct)
         {
-            var users = await userService.GetAllAsync();
-            var usersDto = new List<UserDto>();
-            var usermapper = new UserMapper(userService);
-            foreach (var user in users)
-            {
-                usersDto.Add(usermapper.MapToDto(user));
-            }
-            await SendAsync(usersDto);
+            var userhandler = new UsersHandler(userService);
+            await SendAsync(await userhandler.HandleAsync());
         }
     }
 }

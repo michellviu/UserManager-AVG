@@ -1,13 +1,15 @@
 ﻿using Core.Domain.DTOs;
 using Core.DomainService.Interfaces.Services;
+using Core.Exceptions;
 using Infrastructure.Mappers;
+using WebAPI.Handlers.Users;
 
-namespace WebAPI.Controllers.Users
+namespace WebAPI.EndPoints.Users
 {
-    public class GetUserEndPoint : EndpointWithoutRequest<UserDto>
+    public class UserGetEndPoint : EndpointWithoutRequest<UserDto>
     {
         private readonly IUserService userService;
-        public GetUserEndPoint(IUserService userService)
+        public UserGetEndPoint(IUserService userService)
         {
             this.userService = userService;
         }
@@ -21,15 +23,16 @@ namespace WebAPI.Controllers.Users
         public override async Task HandleAsync(CancellationToken ct)
         {
             var userId = Route<int>("id");
-
-            var user = await userService.GetByIdAsync(userId);
-            if (user == null)
+            var usergethandler = new UserGetHandler(userService);
+            try
+            {
+                await SendOkAsync(await usergethandler.HandleAsync(userId), ct);
+            }
+            catch (EntityNotFoundException)
             {
                 await SendNotFoundAsync(ct);
                 return;
             }
-            var usermapper = new UserMapper(userService);
-            await SendOkAsync(usermapper.MapToDto(user),ct);
         }
     }
 }
